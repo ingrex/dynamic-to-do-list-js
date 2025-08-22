@@ -1,45 +1,51 @@
-// 1) Run after HTML loads (the checker looks for these exact tokens)
+// 1. Wait for the HTML document to fully load
 document.addEventListener("DOMContentLoaded", function () {
-  // 2) Select DOM elements (checker expects these constant names)
-  const addButton = document.getElementById("add-button");
-  const taskInput = document.getElementById("task-input");
-  const taskList  = document.getElementById("task-list");
+    // 2. Select DOM elements
+    const addButton = document.getElementById("add-task-btn");
+    const taskInput = document.getElementById("task-input");
+    const taskList = document.getElementById("task-list");
 
-  // 3) Define addTask (checker looks for a function literally named addTask)
-  function addTask() {
-    const taskText = taskInput.value.trim(); // variable name taskText is required
+    // 3. Define the addTask function
+    function addTask() {
+        const taskText = taskInput.value.trim(); // remove extra spaces
 
-    if (taskText === "") {
-      alert("Please enter a task");
-      return;
+        if (taskText === "") {
+            alert("Please enter a task!");
+            return;
+        }
+
+        // Create new task item
+        const li = document.createElement("li");
+        li.textContent = taskText;
+
+        // Create remove button
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+
+        // ✅ Use classList.add instead of className
+        removeBtn.classList.add("remove-btn");
+
+        // Remove task on click
+        removeBtn.addEventListener("click", function () {
+            taskList.removeChild(li);
+        });
+
+        // Append button and li
+        li.appendChild(removeBtn);
+        taskList.appendChild(li);
+
+        // Clear input field
+        taskInput.value = "";
     }
 
-    // Create <li>
-    const li = document.createElement("li");
-    li.textContent = taskText;
+    // 4. Attach event listeners
+    // ✅ Button click listener
+    addButton.addEventListener("click", addTask);
 
-    // Create remove button (checker wants classList.add)
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.classList.add("remove-btn"); // <- important for the checker
-
-    // Removal behavior (checker asked for onclick)
-    removeBtn.onclick = function () {
-      taskList.removeChild(li);
-    };
-
-    // Append and clear
-    li.appendChild(removeBtn);
-    taskList.appendChild(li);
-    taskInput.value = "";
-  }
-
-  // 4) Attach Event Listeners (checker looks for these exact patterns)
-  addButton.addEventListener("click", addTask);
-
-  taskInput.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-      addTask();
-    }
-  });
+    // ✅ Enter key listener
+    taskInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            addTask();
+        }
+    });
 });
