@@ -1,45 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const taskInput = document.getElementById("taskInput");
-  const addButton = document.getElementById("addButton");
-  const taskList = document.getElementById("taskList");
+// Get references to HTML elements
+const userInput = document.getElementById("userInput");  // input field
+const generateBtn = document.getElementById("generateBtn");  // button
+const contentArea = document.getElementById("contentArea");  // display area
 
-  // === Function required by ALX ===
-  function addTask() {
-    const taskText = taskInput.value.trim();
+// Add a click event listener to the button
+generateBtn.addEventListener("click", () => {
+  // Get what the user typed
+  const text = userInput.value.trim();
 
-    if (taskText === "") {
-      alert("Please enter a task");
-      return;
-    }
-
-    // Create <li>
-    const li = document.createElement("li");
-    li.textContent = taskText;
-
-    // Create Remove button
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.className = "remove-btn";
-
-    // Remove task on click
-    removeBtn.onclick = function () {
-      taskList.removeChild(li);
-    };
-
-    // Append to list
-    li.appendChild(removeBtn);
-    taskList.appendChild(li);
-
-    // Clear input
-    taskInput.value = "";
+  // Check if user typed something
+  if (text === "") {
+    alert("Please type something!");
+    return; // stop if nothing entered
   }
 
-  // === Event listeners required by ALX ===
-  addButton.addEventListener("click", addTask);
+  // Create a new paragraph element
+  const newParagraph = document.createElement("p");
 
-  taskInput.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-      addTask();
-    }
-  });
+  // Set the text of that paragraph
+  newParagraph.textContent = text;
+
+  // Add it to the content area
+  contentArea.appendChild(newParagraph);
+
+  // Clear input box
+  userInput.value = "";
 });
